@@ -51,6 +51,7 @@
 
 .play-title {
 	height: 14px;
+	line-height:14px;
 	font-size: 12px;
 	overflow: hidden;
 	color: #555;
@@ -138,8 +139,4 @@
 
 .audio-player audio {
 	display: none;
-}
-
-body {
-	overflow: hidden;
 }
