@@ -1,8 +1,8 @@
 /**
  * @name XiamiPlayer
- * @version 1.0.0
+ * @version 1.0.1
  * @create 2013.6.4
- * @lastmodified 2013.6.4
+ * @lastmodified 2013.6.12
  * @description XiamiPlayer Plugin
  * @author MuFeng (http://mufeng.me)
  * @url http://mufeng.me/xiamiplayer.html
@@ -17,11 +17,18 @@
 		rsleft = /^(\s|\u00A0)+/,
 		rsright = /(\s|\u00A0)+$/,
 		
+		rios = /iPhone|iPad|iPod/i,
+		rie  = /MSIE\s[\d]+/,
+		
+		
 		//是否支持触摸
 		inTouch = ("createTouch" in document) || ('ontouchstart' in window),
 		
 		// 是否是ios
-		isIos = !! navigator.userAgent.match(/iPhone|iPad|iPod/i),
+		isIos = !! navigator.userAgent.match(rios),
+		
+		// 是否是ie
+		isIE = !! navigator.userAgent.match(rie),
 		
 		// 全局 audio 数组变量
 		audioList = [],
@@ -120,7 +127,7 @@
 			this.ajax();
 		},
 		supportMp3: function() { // 判断是否支持 audio 播放mp3
-			return ((this.audio && this.audio.canPlayType('audio/mpeg')) || isIos) ? true : false;
+			return (((this.audio && this.audio.canPlayType('audio/mpeg')) || isIos) && !isIE) ? true : false;
 		},
 		flash: function(data) { // 不支持 audio 播放mp3, 一律采用flash
 			var container = this.element,
