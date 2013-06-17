@@ -1,7 +1,10 @@
 ﻿<h2>XiamiPlayer 更新历史</h2>
 
+<p>2013.6.17 | 1.0.2<br>
+1. 增加localStorage.xiami-volume 来保存audio模式下的音量大小;</p>
+
 <p>2013.6.12 | 1.0.1<br>
-1. 修复ie10 不能播放attachment mp3的bug</p>
+1. 修复ie10 不能播放attachment mp3的bug;</p>
 
 <p>2013.6.4 | 1.0.0<br>
-1. 最初发布测试版</p>
+1. 最初发布测试版;</p>

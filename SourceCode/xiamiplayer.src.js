@@ -1,8 +1,8 @@
 /**
  * @name XiamiPlayer
- * @version 1.0.1
+ * @version 1.0.2
  * @create 2013.6.4
- * @lastmodified 2013.6.12
+ * @lastmodified 2013.6.17
  * @description XiamiPlayer Plugin
  * @author MuFeng (http://mufeng.me)
  * @url http://mufeng.me/xiamiplayer.html
@@ -29,6 +29,9 @@
 		
 		// 是否是ie
 		isIE = !! navigator.userAgent.match(rie),
+		
+		// 判断是否支持 localStorage
+		isLocalStorage = !(typeof window.localStorage == "undefined"),
 		
 		// 全局 audio 数组变量
 		audioList = [],
@@ -147,7 +150,7 @@
 				descri = this.title || (data.title + " - " + data.author),
 				autoplay = this.autoplay ? 1 : 0,
 				loop = this.loop ? 1 : 0;
-
+				
 			container.innerHTML = '<div id="' + id + '" class="audio-player"><div class="play-button"></div><div class="play-box"><div class="play-title">' + descri + '</div><div class="play-data"><div class="play-prosess"><div class="play-loaded"></div><div class="play-prosess-bar"><div class="play-prosess-thumb"></div></div></div><div class="play-right"><div class="play-timer">--:--</div><div class="play-volume"></div></div></div></div></div>';
 			this.elementid = id;
 			this.buildPlayer(src);
@@ -167,7 +170,7 @@
 				audioDom = document.getElementById(that.elementid),
 				audio_id = that.elementid.replace("xiami", "xiamiaudio"),
 				elems = that.audioElements();
-
+			
 			if (autoplay && !isIos) { // 判断autoplay, ios不支持自动播放
 				if (!document.getElementById(audio_id)) {
 					that.audio.src = src;
@@ -190,8 +193,16 @@
 		},
 		hookEvent: function() { // 事件绑定
 			var that = this,
-				elems = that.audioElements();
-
+				elems = that.audioElements(),
+				volume = isLocalStorage ? localStorage.getItem("xiami-volume") : "undefined";
+			
+			// 初始音量赋值
+			volume = (volume!="undefined" && volume!=null) ? volume : 6;
+			this.audio.volume = Math.abs(volume/6).toFixed(2);
+			
+			// 音量图标背景
+			elems[5].style.backgroundPosition = "0 " + -volume * 15 + "px";
+			
 			elems[0].addEventListener("click", function() {
 				if (that.audio.error) {
 					return;
@@ -302,9 +313,15 @@
 				var pageX = getMousePoint(e),
 					thePos = pageX - volumeBarOffleft;
 				if (0 < thePos && thePos < volumeBarWidth) {
-					var v = parseInt(thePos / 4);
-					that.audio.volume = Math.abs(v / 6);
+					// 音量算法改成Math.ceil, 向下取整
+					var v = Math.ceil(thePos/4);
+					
+					// 音量大小保留两位小数
+					that.audio.volume = Math.abs(v / 6).toFixed(2);
+					
 					volumeBar.style.backgroundPosition = "0 " + -v * 15 + "px";
+					
+					localStorage.setItem("xiami-volume", v);
 				}
 			}, false);
 		},
