@@ -1,8 +1,8 @@
 /**
  * @name XiamiPlayer
- * @version 1.0.2
+ * @version 1.0.3
  * @create 2013.6.4
- * @lastmodified 2013.6.17
+ * @lastmodified 2013.6.30
  * @description XiamiPlayer Plugin
  * @author MuFeng (http://mufeng.me)
  * @url http://mufeng.me/xiamiplayer.html
@@ -274,8 +274,16 @@
 				endEvent = inTouch ? "touchend" : "mouseup",
 
 				drag = function() {
-					var doc = document.body,
+					var count = 0,
+						doc = document.body,
 						move = function(e) {
+							count++;
+							
+							// 当计数器为偶数的时候不执行mousemove
+							if( count % 2 === 0 ){
+								return;
+							}
+							
 							var pageX = getMousePoint(e),
 								thePos = pageX - _barOffleft;
 							if (0 < thePos && thePos < _barWidth) {
@@ -292,15 +300,15 @@
 				};
 
 			_bar.addEventListener(startEvent, drag, false);
-			_bar.addEventListener(endEvent, drag, false);
-			_bar.addEventListener("click", function(e) {
+			_bar.removeEventListener(endEvent, drag, false);
+			_bar.onclick = function(e) {
 				var pageX = getMousePoint(e),
 					thePos = pageX - _barOffleft;
 				if (0 < thePos && thePos < _barWidth) {
 					that.audio.currentTime = Math.round(that.audio.duration * thePos / _barWidth);
 					that.audio.play()
 				}
-			}, false);
+			}
 		},
 		adjustVolume: function() { // 调整音量, 不支持ios
 			var that = this,
