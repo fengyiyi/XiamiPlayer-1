@@ -1,8 +1,8 @@
 /**
  * @name XiamiPlayer
- * @version 1.0.3
+ * @version 1.0.4
  * @create 2013.6.4
- * @lastmodified 2013.6.30
+ * @lastmodified 2013.7.4
  * @description XiamiPlayer Plugin
  * @author MuFeng (http://mufeng.me)
  * @url http://mufeng.me/xiamiplayer.html
@@ -166,33 +166,25 @@
 		buildPlayer: function(src) {
 			var that = this,
 				autoplay = that.autoplay,
-				loop = that.loop,
-				audioDom = document.getElementById(that.elementid),
 				audio_id = that.elementid.replace("xiami", "xiamiaudio"),
 				elems = that.audioElements();
 			
 			if (autoplay && !isIos) { // 判断autoplay, ios不支持自动播放
 				if (!document.getElementById(audio_id)) {
-					that.audio.src = src;
-					that.audio.id = audio_id;
-					audioDom.appendChild(that.audio);
-					that.audio.play();
-					that.hookEvent();
+					that.hookEvent(src);
 				}
 			} else { // 非autoplay, 必须要点击播放按钮之后, 才会插入audio
 				elems[0].addEventListener("click", function() {
 					if (!document.getElementById(audio_id)) {
-						that.audio.src = src;
-						that.audio.id = audio_id;
-						audioDom.appendChild(that.audio);
-						that.audio.play();
-						that.hookEvent();
+						that.hookEvent(src);
 					}
 				}, false);
 			}
 		},
-		hookEvent: function() { // 事件绑定
+		hookEvent: function(src) { // 事件绑定
 			var that = this,
+				audioDom = document.getElementById(that.elementid),
+				audio_id = that.elementid.replace("xiami", "xiamiaudio"),
 				elems = that.audioElements(),
 				volume = isLocalStorage ? localStorage.getItem("xiami-volume") : "undefined";
 			
@@ -202,6 +194,11 @@
 			
 			// 音量图标背景
 			elems[5].style.backgroundPosition = "0 " + -volume * 15 + "px";
+
+			this.audio.src = src;
+			this.audio.id = audio_id;
+			audioDom.appendChild(this.audio);
+			this.audio.play();
 			
 			elems[0].addEventListener("click", function() {
 				if (that.audio.error) {

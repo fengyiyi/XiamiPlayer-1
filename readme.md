@@ -1,7 +1,7 @@
 ﻿<h3>XiamiPlayer是Xiami音乐播放器插件</h3>
 <ul>
-<li>当前版本: 1.0.3<br /></li>
-<li>更新时间: 2013.6.30</li>
+<li>当前版本: 1.0.4<br /></li>
+<li>更新时间: 2013.7.4</li>
 </ul>
 <p>使用方法: <a href="https://github.com/iMuFeng/XiamiPlayer/wiki/How-to-use-XiamiPlayer">https://github.com/iMuFeng/XiamiPlayer/wiki/How-to-use-XiamiPlayer</a></p>
 <p>插件演示页: <a href="http://mufeng.me/xiamiplayer.html" target="_blank">XiamiPlayer Demo</a></p>
